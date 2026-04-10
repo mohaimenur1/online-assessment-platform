@@ -1,9 +1,9 @@
-import '@/styles/globals.css';
-import Providers from '@/components/Providers';
+import "@/styles/globals.css";
+import Providers from "@/components/Providers";
 
 export const metadata = {
-  title: 'AssessAI — Online Assessment Platform',
-  description: 'Create and manage online assessments with ease',
+  title: "assess — Online Assessment Platform",
+  description: "Create and manage online assessments with ease",
 };
 
 export default function RootLayout({ children }) {
