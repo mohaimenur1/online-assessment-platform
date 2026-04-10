@@ -114,7 +114,7 @@ export default function CandidateDashboard() {
             <input
               type="text"
               placeholder="Search by exam title"
-              className="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-4 pr-12 outline-none shadow-sm focus:border-[#6336FF] text-sm"
+              className="w-full bg-white border border-gray-200 rounded-xl py-2.5 px-4 pr-12 outline-none shadow-sm focus:border-[#6336FF] text-sm text-gray-950"
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-50 p-2 rounded-lg cursor-pointer">
               <MagnifyingGlassIcon className="h-4 w-4 text-[#6336FF] stroke-[3px]" />
