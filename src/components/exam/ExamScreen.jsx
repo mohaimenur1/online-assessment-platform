@@ -165,10 +165,10 @@ export default function ExamScreen({ exam }) {
             <p className="text-[11px] text-gray-400">Ref. ID - 16101121</p>
           </div>
           <div className="h-10 w-10 bg-gray-200 rounded-full overflow-hidden border border-gray-100">
-            <img
+            {/* <img
               src="https://ui-avatars.com/api/?name=Arif+Hossain"
               alt="profile"
-            />
+            /> */}
           </div>
           <ChevronDownIcon className="h-4 w-4 text-gray-500" />
         </div>

@@ -14,6 +14,7 @@ import {
   EnvelopeIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 // Status color function
 function statusColor(status) {
@@ -200,10 +201,10 @@ export default function EmployerDashboard({ setPage }) {
             <p className="text-[11px] text-gray-400">Ref. ID - 16101121</p>
           </div>
           <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img
+            {/* <Image 
               src="https://ui-avatars.com/api/?name=Arif+Hossain"
               alt="profile"
-            />
+            /> */}
           </div>
           <ChevronDownIcon className="h-4 w-4 text-gray-500" />
         </div>

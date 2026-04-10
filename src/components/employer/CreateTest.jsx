@@ -405,7 +405,7 @@ function StepQuestions({ questions, setQuestions, onBack, onSubmit }) {
 
         {questions.length === 0 ? (
           <div className="text-center py-12 text-gray-400 text-sm bg-gray-50 rounded-xl">
-            No questions yet. Click "Add Question" to start building your
+            No questions yet. Click Add Question to start building your
             assessment.
           </div>
         ) : (
