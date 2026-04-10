@@ -19,12 +19,6 @@ export default function Home() {
 
   const [selectedRole, setSelectedRole] = useState(null);
   const [page, setPage] = useState("dashboard");
-
-  // Step 1: pick role
-  // if (!selectedRole) {
-  //   return <RoleSelector onSelect={setSelectedRole} />;
-  // }
-
   // Step 2: login
   if (!isAuthenticated) {
     return <LoginPage role={selectedRole} />;
@@ -38,8 +32,6 @@ export default function Home() {
   // Step 4: main layout with sidebar
   return (
     <div className="flex min-h-screen bg-[#0f1117]">
-      <Sidebar page={page} setPage={setPage} />
-
       <main className="flex-1 flex flex-col min-w-0">
         {role === "employer" && (
           <>
