@@ -32,9 +32,13 @@ function CandidatesModal({ exam, onClose }) {
   const candidates = MOCK_CANDIDATES.filter((c) => c.examId === exam.id);
 
   return (
-    <Modal title={`Candidates — ${exam.title}`} onClose={onClose} width={580}>
+    <Modal
+      title={<span className="text-slate-950">Candidates — {exam.title}</span>}
+      onClose={onClose}
+      width={580}
+    >
       {candidates.length === 0 ? (
-        <p className="text-center text-[#4a5568] py-8 text-sm">
+        <p className="text-center text-slate-950 py-8 text-sm">
           No candidates for this exam yet.
         </p>
       ) : (
@@ -42,13 +46,13 @@ function CandidatesModal({ exam, onClose }) {
           {candidates.map((c) => (
             <div
               key={c.id}
-              className="flex items-center justify-between bg-[#1e2535] rounded-xl px-4 py-3 gap-3"
+              className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 gap-3 border border-gray-100"
             >
               <div className="flex items-center gap-3">
                 <Avatar name={c.name} size="sm" />
                 <div>
-                  <p className="text-sm font-medium text-[#e2e8f0]">{c.name}</p>
-                  <p className="text-xs text-[#8892a4]">{c.email}</p>
+                  <p className="text-sm font-medium text-[#374151]">{c.name}</p>
+                  <p className="text-xs text-gray-500">{c.email}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -60,7 +64,7 @@ function CandidatesModal({ exam, onClose }) {
                     {c.score}%
                   </span>
                 )}
-                <Badge
+                {/* <Badge
                   color={
                     c.status === "completed"
                       ? "green"
@@ -70,8 +74,8 @@ function CandidatesModal({ exam, onClose }) {
                   }
                 >
                   {c.status}
-                </Badge>
-                <span className="text-xs text-[#4a5568]">{c.time}</span>
+                </Badge> */}
+                <span className="text-xs text-gray-400">{c.time}</span>
               </div>
             </div>
           ))}
