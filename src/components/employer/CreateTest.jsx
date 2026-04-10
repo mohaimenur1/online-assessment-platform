@@ -53,7 +53,14 @@ function QuestionModal({ initial, onSave, onClose }) {
   }
 
   return (
-    <Modal title={initial ? "Edit Question" : "Add Question"} onClose={onClose}>
+    <Modal
+      title={
+        <span className="text-gray-950">
+          {initial ? "Edit Question" : "Add Question"}
+        </span>
+      }
+      onClose={onClose}
+    >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-[13px] font-medium text-gray-700">

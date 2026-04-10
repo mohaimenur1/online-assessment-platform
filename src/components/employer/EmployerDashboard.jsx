@@ -227,7 +227,7 @@ export default function EmployerDashboard({ setPage }) {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full bg-white border border-indigo-100 rounded-lg py-2.5 px-4 pr-10 outline-none shadow-sm focus:border-indigo-400"
+              className="text-gray-950 w-full bg-white border border-indigo-100 rounded-lg py-2.5 px-4 pr-10 outline-none shadow-sm focus:border-indigo-400"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-indigo-50 p-1.5 rounded-md">
               <MagnifyingGlassIcon className="h-4 w-4 text-[#6336FF]" />
