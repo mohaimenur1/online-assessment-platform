@@ -77,7 +77,7 @@ export default function LoginPage({ role }) {
                 {...register("email")}
                 type="text"
                 placeholder="Enter your email/User ID"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder:text-gray-400"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder:text-gray-950 text-gray-950"
               />
               {errors.email && (
                 <p className="text-xs text-red-500">{errors.email.message}</p>
@@ -94,7 +94,7 @@ export default function LoginPage({ role }) {
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder:text-gray-400"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 outline-none transition-all placeholder:text-gray-950 text-gray-950"
                 />
                 <button
                   type="button"
