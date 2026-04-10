@@ -1,25 +1,31 @@
-'use client';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { clearActiveExam } from '@/lib/store/slices/examsSlice';
-import { useExamAnswers, useBehaviorTracking } from '@/lib/hooks';
-import { MOCK_QUESTIONS } from '@/lib/mock-data';
-import { Card, Button, Badge } from '@/components/ui';
-import ExamTimer from './ExamTimer';
+"use client";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { clearActiveExam } from "@/lib/store/slices/examsSlice";
+import { useExamAnswers, useBehaviorTracking } from "@/lib/hooks";
+import { MOCK_QUESTIONS } from "@/lib/mock-data";
+import { Button } from "@/components/ui";
+import {
+  PhoneIcon,
+  EnvelopeIcon,
+  ChevronDownIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
+import ExamTimer from "./ExamTimer";
 
 function WarningBanner({ warnings, onDismiss }) {
   if (!warnings.length) return null;
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 w-full max-w-[800px] mx-auto mb-4">
       {warnings.map((w) => (
         <div
           key={w.id}
-          className="flex justify-between items-center bg-red-500/10 border-b border-red-500/20 text-red-400 px-6 py-2 text-sm font-medium"
+          className="flex justify-between items-center bg-red-50 border border-red-200 text-red-600 px-6 py-2 rounded-lg text-sm font-medium"
         >
-          {w.message}
+          <span>⚠️ {w.message}</span>
           <button
             onClick={() => onDismiss(w.id)}
-            className="ml-4 text-red-400 bg-transparent border-none cursor-pointer"
+            className="text-red-600 font-bold"
           >
             ×
           </button>
@@ -29,136 +35,60 @@ function WarningBanner({ warnings, onDismiss }) {
   );
 }
 
-function QuestionNavPalette({ questions, current, setCurrent, isAnswered }) {
-  return (
-    <aside className="w-[180px] bg-[#161b27] border-r border-white/10 overflow-y-auto p-4 flex-shrink-0">
-      <p className="text-[11px] text-[#4a5568] mb-3 font-semibold tracking-wide uppercase">
-        {questions.filter((_, i) => isAnswered(i)).length}/{questions.length} answered
-      </p>
-      <div className="grid grid-cols-4 gap-1.5">
-        {questions.map((_, i) => {
-          const answered = isAnswered(i);
-          return (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`w-8 h-8 rounded-md text-[13px] font-medium transition-all border-none cursor-pointer ${
-                current === i
-                  ? 'bg-[#6c63ff] text-white'
-                  : answered
-                  ? 'bg-[rgba(16,185,129,0.12)] text-[#10b981]'
-                  : 'bg-[#1e2535] text-[#8892a4] hover:bg-white/10'
-              }`}
-            >
-              {i + 1}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Legend */}
-      <div className="mt-4 flex flex-col gap-1.5">
-        {[
-          { color: 'bg-[#6c63ff]', label: 'Current' },
-          { color: 'bg-[rgba(16,185,129,0.12)]', label: 'Answered', textColor: 'text-[#10b981]' },
-          { color: 'bg-[#1e2535]', label: 'Not answered' },
-        ].map((l) => (
-          <div key={l.label} className="flex items-center gap-1.5">
-            <div className={`w-3 h-3 rounded-sm ${l.color}`} />
-            <span className="text-[11px] text-[#4a5568]">{l.label}</span>
-          </div>
-        ))}
-      </div>
-    </aside>
-  );
-}
-
-function QuestionPanel({ question, qIndex, answers, setRadio, toggleCheckbox, setText }) {
+function QuestionPanel({
+  question,
+  qIndex,
+  answers,
+  setRadio,
+  toggleCheckbox,
+  setText,
+}) {
   const ans = answers[qIndex];
 
   return (
-    <div className="flex-1 overflow-y-auto p-8 max-w-[720px] mx-auto w-full">
-      <Card className="mb-4">
-        <div className="flex items-center gap-2 mb-4">
-          <Badge color="accent">{question.type}</Badge>
-          {question.type !== 'text' && (
-            <span className="text-xs text-[#8892a4]">
-              {question.type === 'checkbox' ? 'Select all that apply' : 'Select one option'}
-            </span>
-          )}
-        </div>
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 w-full max-w-[800px] mx-auto">
+      <h2 className="text-lg font-bold text-[#374151] mb-8">
+        Q{qIndex + 1}. {question.title}
+      </h2>
 
-        <h2 className="text-base font-semibold text-[#e2e8f0] leading-relaxed mb-6">
-          {qIndex + 1}. {question.title}
-        </h2>
-
-        {question.type === 'text' ? (
-          <textarea
-            value={ans || ''}
-            onChange={(e) => setText(qIndex, e.target.value)}
-            placeholder="Type your answer here..."
-            className="w-full bg-[#1e2535] border border-white/10 rounded-xl px-4 py-3 text-sm text-[#e2e8f0] outline-none focus:border-[#6c63ff] transition-colors placeholder:text-[#4a5568] resize-y min-h-[140px] font-sans"
-          />
-        ) : (
-          <div className="flex flex-col gap-2.5">
-            {question.options.map((opt, i) => {
-              const selected =
-                question.type === 'checkbox'
-                  ? (ans || []).includes(i)
-                  : ans === i;
-
-              return (
+      {question.type === "text" ? (
+        <textarea
+          value={ans || ""}
+          onChange={(e) => setText(qIndex, e.target.value)}
+          placeholder="Type your answer here..."
+          className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:border-[#6336FF] min-h-[160px]"
+        />
+      ) : (
+        <div className="flex flex-col gap-4">
+          {question.options.map((opt, i) => {
+            const selected =
+              question.type === "checkbox"
+                ? (ans || []).includes(i)
+                : ans === i;
+            return (
+              <div
+                key={i}
+                onClick={() => {
+                  if (question.type === "radio") setRadio(qIndex, i);
+                  else toggleCheckbox(qIndex, i);
+                }}
+                className="flex items-center gap-4 border border-gray-200 rounded-xl px-5 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              >
                 <div
-                  key={i}
-                  onClick={() => {
-                    if (question.type === 'radio') setRadio(qIndex, i);
-                    else toggleCheckbox(qIndex, i);
-                  }}
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 cursor-pointer transition-all duration-150 ${
-                    selected
-                      ? 'bg-[rgba(108,99,255,0.12)] border border-[#6c63ff]'
-                      : 'bg-[#1e2535] border border-transparent hover:border-white/15'
-                  }`}
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selected ? "border-[#6336FF]" : "border-gray-300"}`}
                 >
-                  <div
-                    className={`w-5 h-5 flex-shrink-0 flex items-center justify-center transition-all ${
-                      question.type === 'checkbox' ? 'rounded' : 'rounded-full'
-                    } border-2 ${selected ? 'border-[#6c63ff] bg-[#6c63ff]' : 'border-[#4a5568] bg-transparent'}`}
-                  >
-                    {selected && (
-                      <span className="text-white text-[10px] font-bold">
-                        {question.type === 'checkbox' ? '✓' : '●'}
-                      </span>
-                    )}
-                  </div>
-                  <span className={`text-sm ${selected ? 'text-[#e2e8f0]' : 'text-[#8892a4]'}`}>{opt}</span>
+                  {selected && (
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#6336FF]" />
+                  )}
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-function ResultScreen({ answeredCount, totalCount, tabSwitches, onFinish }) {
-  const score = Math.min(100, Math.round((answeredCount / totalCount) * 85 + 10));
-  const color = score >= 70 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
-  return (
-    <div className="fade-in min-h-screen bg-[#0f1117] flex items-center justify-center flex-col gap-5 p-8">
-      <div className="text-5xl">🏆</div>
-      <h2 className="text-2xl font-bold text-[#e2e8f0]">Exam Submitted!</h2>
-      <Card className="text-center min-w-[260px]">
-        <p className="text-5xl font-black mb-2" style={{ color }}>{score}%</p>
-        <p className="text-sm text-[#8892a4]">
-          {answeredCount} of {totalCount} questions answered
-        </p>
-        {tabSwitches > 0 && (
-          <p className="text-xs text-[#ef4444] mt-2">Tab switches detected: {tabSwitches}</p>
-        )}
-      </Card>
-      <Button onClick={onFinish}>Back to Dashboard</Button>
+                <span className="text-sm text-[#374151] font-medium">
+                  {opt}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -169,81 +99,136 @@ export default function ExamScreen({ exam }) {
   const [current, setCurrent] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
-  const { answers, setRadio, toggleCheckbox, setText, isAnswered, answeredCount } = useExamAnswers(questions);
+  const { answers, setRadio, toggleCheckbox, setText, answeredCount } =
+    useExamAnswers(questions);
   const { warnings, tabSwitchCount, dismissWarning } = useBehaviorTracking();
 
-  function submit() { setSubmitted(true); }
-  function finish() { dispatch(clearActiveExam()); }
+  function submit() {
+    setSubmitted(true);
+  }
+  function finish() {
+    dispatch(clearActiveExam());
+  }
 
   if (submitted) {
     return (
-      <ResultScreen
-        answeredCount={answeredCount}
-        totalCount={questions.length}
-        tabSwitches={tabSwitchCount.current}
-        onFinish={finish}
-      />
+      <div className="min-h-screen bg-[#F8F9FB] flex flex-col items-center justify-center p-8">
+        <div className="bg-white p-12 rounded-3xl shadow-sm border border-gray-100 text-center max-w-md w-full">
+          <div className="text-6xl mb-6 text-green-500">✓</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Exam Submitted
+          </h2>
+          <p className="text-gray-500 mb-8">
+            Answers: {answeredCount}/{questions.length}
+          </p>
+          <Button onClick={finish} className="w-full bg-[#6336FF]">
+            Back to Dashboard
+          </Button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0f1117]">
-      {/* Header */}
-      <header className="bg-[#161b27] border-b border-white/10 px-6 py-3 flex items-center justify-between sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <h1 className="text-sm font-semibold text-[#e2e8f0]">{exam.title}</h1>
-          <span className="text-xs text-[#4a5568]">
-            Q{current + 1}/{questions.length}
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <ExamTimer totalSeconds={exam.duration * 60} onTimeout={submit} />
-          <Button onClick={submit} variant="success" size="sm">
-            Submit Exam
-          </Button>
-        </div>
-      </header>
-
-      {/* Warning banners */}
-      <WarningBanner warnings={warnings} onDismiss={dismissWarning} />
-
-      {/* Body */}
-      <div className="flex flex-1 overflow-hidden">
-        <QuestionNavPalette
-          questions={questions}
-          current={current}
-          setCurrent={setCurrent}
-          isAnswered={isAnswered}
-        />
-
-        <div className="flex-1 flex flex-col overflow-y-auto">
-          <QuestionPanel
-            key={current}
-            question={questions[current]}
-            qIndex={current}
-            answers={answers}
-            setRadio={setRadio}
-            toggleCheckbox={toggleCheckbox}
-            setText={setText}
-          />
-
-          {/* Navigation */}
-          <div className="flex justify-between px-8 pb-6 max-w-[720px] mx-auto w-full">
-            <Button
-              variant="ghost"
-              onClick={() => setCurrent((c) => Math.max(0, c - 1))}
-              disabled={current === 0}
-            >
-              ← Prev
-            </Button>
-            {current < questions.length - 1 ? (
-              <Button onClick={() => setCurrent((c) => c + 1)}>Next →</Button>
-            ) : (
-              <Button variant="success" onClick={submit}>Submit Exam</Button>
-            )}
+    <div className="min-h-screen bg-[#F8F9FB] flex flex-col font-sans">
+      {/* --- NAVBAR --- */}
+      <nav className="w-full bg-white px-8 py-3 flex justify-between items-center shadow-sm border-b border-gray-100 sticky top-0 z-30">
+        <div className="flex items-center gap-1">
+          <div className="text-[#3F4195] font-bold text-xl uppercase tracking-tighter">
+            AKIJ{" "}
+            <span className="font-light text-sm border-l border-gray-300 pl-1 text-gray-500">
+              Resource
+            </span>
           </div>
         </div>
-      </div>
+        <h2 className="text-[#374151] text-md font-bold">Akij Resource</h2>
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <p className="text-sm font-bold text-[#374151]">Arif Hossain</p>
+            <p className="text-[11px] text-gray-400">Ref. ID - 16101121</p>
+          </div>
+          <div className="h-10 w-10 bg-gray-200 rounded-full overflow-hidden border border-gray-100">
+            <img
+              src="https://ui-avatars.com/api/?name=Arif+Hossain"
+              alt="profile"
+            />
+          </div>
+          <ChevronDownIcon className="h-4 w-4 text-gray-500" />
+        </div>
+      </nav>
+
+      {/* --- MAIN CONTENT --- */}
+      <main className="flex-grow p-10 flex flex-col items-center gap-6">
+        <WarningBanner warnings={warnings} onDismiss={dismissWarning} />
+
+        {/* Question Info Box */}
+        <div className="w-full max-w-[800px] bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex justify-between items-center">
+          <h3 className="text-lg font-bold text-[#374151]">
+            Question ({current + 1}/{questions.length})
+          </h3>
+          <div className="bg-gray-50 px-8 py-3 rounded-xl flex items-center gap-3 text-lg font-bold text-[#374151] min-w-[160px] justify-center">
+            <ExamTimer totalSeconds={exam.duration * 60} onTimeout={submit} />
+            <span className="text-gray-400 text-sm font-normal">left</span>
+          </div>
+        </div>
+
+        {/* Active Question */}
+        <QuestionPanel
+          key={current}
+          question={questions[current]}
+          qIndex={current}
+          answers={answers}
+          setRadio={setRadio}
+          toggleCheckbox={toggleCheckbox}
+          setText={setText}
+        />
+
+        {/* Actions */}
+        <div className="w-full max-w-[800px] flex justify-between items-center mt-4">
+          <button
+            onClick={() => setCurrent((c) => Math.max(0, c - 1))}
+            className="px-8 py-3 border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 transition-colors"
+          >
+            Skip this Question
+          </button>
+          <button
+            onClick={() =>
+              current < questions.length - 1
+                ? setCurrent((c) => c + 1)
+                : submit()
+            }
+            className="px-10 py-3 bg-[#6336FF] text-white rounded-xl font-bold shadow-lg shadow-indigo-200 hover:bg-[#5229e6] transition-all"
+          >
+            {current < questions.length - 1 ? "Save & Continue" : "Finish Exam"}
+          </button>
+        </div>
+      </main>
+
+      {/* --- FOOTER --- */}
+      <footer className="bg-[#0A0B1A] text-white px-10 py-6 flex flex-wrap justify-between items-center mt-auto">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-400 text-sm">Powered by</span>
+          <div className="font-bold text-lg flex items-center uppercase">
+            AKIJ{" "}
+            <span className="font-light text-xs border-l border-gray-600 ml-1 pl-1">
+              Resource
+            </span>
+          </div>
+        </div>
+        <div className="flex gap-8 items-center text-sm">
+          <div className="flex items-center gap-4">
+            <span className="text-gray-400">Helpline</span>
+            <div className="flex items-center gap-2">
+              <PhoneIcon className="h-4 w-4 text-[#6336FF]" />
+              <span>+88 011020202505</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <EnvelopeIcon className="h-4 w-4 text-[#6336FF]" />
+            <span>support@akij.work</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
