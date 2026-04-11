@@ -19,9 +19,13 @@ A full-featured online assessment platform built with **Next.js 14**, **Redux To
 
 ## 📂 GitHub Repository
 
-👉 https://github.com/mohaimenur1/online-assessment-platform
+👉 https://drive.google.com/file/d/1dXlhEO4hbwBDo7rfYxcaDYxPzX42UmWC/view?usp=sharing
 
 ---
+
+## 🎬 Video Recording link of the project
+
+👉 https://github.com/mohaimenur1/online-assessment-platform
 
 ---
 
